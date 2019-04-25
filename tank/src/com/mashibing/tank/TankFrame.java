@@ -2,6 +2,8 @@ package com.mashibing.tank;
 
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -14,6 +16,8 @@ public class TankFrame extends Frame {
 		setResizable(false);
 		setTitle("tank war");
 		setVisible(true);
+		
+		this.addKeyListener(new MyKeyListener());
 		
 		addWindowListener(new WindowAdapter() {
 
@@ -32,5 +36,23 @@ public class TankFrame extends Frame {
 		x += 10;
 		y += 10;
 	}
+	
+	
+	class MyKeyListener extends KeyAdapter {
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			System.out.println("key pressed");
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			System.out.println("key released");
+		}
+		
+		
+		
+	}
+	
 	
 }
