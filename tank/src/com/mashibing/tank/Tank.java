@@ -1,6 +1,7 @@
 package com.mashibing.tank;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.Random;
 
 public class Tank {
@@ -8,6 +9,8 @@ public class Tank {
 	public static int WIDTH = ResourceMgr.goodTankU.getWidth();
 
 	public static int HEIGHT = ResourceMgr.goodTankU.getHeight();
+	
+	Rectangle rect = new Rectangle();
 	
 	private Random random = new Random();
 
@@ -27,6 +30,11 @@ public class Tank {
 		this.dir = dir;
 		this.group = group;
 		this.tf = tf;
+		
+		rect.x = this.x;
+		rect.y = this.y;
+		rect.width = WIDTH;
+		rect.height = HEIGHT;
 	}
 	public void fire() {
 		int bX = this.x + Tank.WIDTH/2 - Bullet.WIDTH/2;
@@ -86,10 +94,14 @@ public class Tank {
 			randomDir();
 		
 		boundsCheck();
+		//update rect
+		rect.x = this.x;
+		rect.y = this.y;
+		
 	}
 
 	private void boundsCheck() {
-		if(this.x < 2) x = 2;
+		if (this.x < 2) x = 2;
 		if (this.y < 28) y = 28;
 		if (this.x > TankFrame.GAME_WIDTH- Tank.WIDTH -2) x = TankFrame.GAME_WIDTH - Tank.WIDTH -2;
 		if (this.y > TankFrame.GAME_HEIGHT - Tank.HEIGHT -2 ) y = TankFrame.GAME_HEIGHT -Tank.HEIGHT -2;
