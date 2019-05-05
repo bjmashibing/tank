@@ -1,0 +1,2 @@
+#tanks count at initialization
+initTankCount=10
