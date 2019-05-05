@@ -19,7 +19,7 @@ public class TankFrame extends Frame {
 	List<Tank> tanks = new ArrayList<>();
 	Explode e = new Explode(100, 100, this);
 	
-	static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+	static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
 
 	public TankFrame() {
 		setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -118,6 +118,8 @@ public class TankFrame extends Frame {
 			}
 
 			setMainTankDir();
+			
+			new Thread(()->new Audio("audio/tank_move.wav").play()).start();
 		}
 
 		@Override

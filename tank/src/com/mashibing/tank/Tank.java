@@ -4,10 +4,10 @@ import java.awt.Graphics;
 import java.util.Random;
 
 public class Tank {
-	private static final int SPEED = 1;
-	public static int WIDTH = ResourceMgr.tankD.getWidth();
+	private static final int SPEED = 2;
+	public static int WIDTH = ResourceMgr.tankU.getWidth();
 
-	public static int HEIGHT = ResourceMgr.tankD.getHeight();
+	public static int HEIGHT = ResourceMgr.tankU.getHeight();
 	
 	private Random random = new Random();
 
@@ -33,6 +33,8 @@ public class Tank {
 		int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
 		
 		tf.bullets.add(new Bullet(bX, bY, this.dir, this.group, this.tf));
+		
+		if(this.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
 	}
 	
 	public Dir getDir() {
