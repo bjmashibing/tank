@@ -2,9 +2,12 @@ package com.mashibing.tank;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 public class Tank {
+	
+	
 	private static final int SPEED = 2;
 	public static int WIDTH = ResourceMgr.goodTankU.getWidth();
 
@@ -14,14 +17,16 @@ public class Tank {
 	
 	private Random random = new Random();
 
-	private int x, y;
+	int x, y;
 
-	private Dir dir = Dir.DOWN;
+	Dir dir = Dir.DOWN;
 
 	private boolean moving = true;
-	private TankFrame tf = null;
+	TankFrame tf = null;
 	private boolean living = true;
-	private Group group = Group.BAD;
+	Group group = Group.BAD;
+	
+	FireStrategy fs;
 	
 	public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
 		super();
@@ -35,14 +40,23 @@ public class Tank {
 		rect.y = this.y;
 		rect.width = WIDTH;
 		rect.height = HEIGHT;
+		
+		if(group == Group.GOOD) {
+			String goodFSName = (String)PropertyMgr.get("goodFS");
+			
+			try {
+				fs = (FireStrategy)Class.forName(goodFSName).getDeclaredConstructor().newInstance();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		} else {
+			fs = new DefaultFireStrategy();
+		}
 	}
+	
 	public void fire() {
-		int bX = this.x + Tank.WIDTH/2 - Bullet.WIDTH/2;
-		int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
-		
-		tf.bullets.add(new Bullet(bX, bY, this.dir, this.group, this.tf));
-		
-		if(this.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
+		fs.fire(this);
 	}
 	
 	public Dir getDir() {
