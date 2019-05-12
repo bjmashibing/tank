@@ -9,18 +9,26 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import com.mashibing.tank.abstractfactory.BaseBullet;
+import com.mashibing.tank.abstractfactory.BaseExplode;
+import com.mashibing.tank.abstractfactory.BaseTank;
+import com.mashibing.tank.abstractfactory.DefaultFactory;
+import com.mashibing.tank.abstractfactory.GameFactory;
+
 public class TankFrame extends Frame {
+	
 
 	Tank myTank = new Tank(200, 400, Dir.DOWN, Group.GOOD, this);
-	List<Bullet> bullets = new ArrayList<>();
-	List<Tank> tanks = new ArrayList<>();
-	List<Explode> explodes = new ArrayList<>();
+	public List<BaseBullet> bullets = new ArrayList<>();
+	public List<BaseTank> tanks = new ArrayList<>();
+	public List<BaseExplode> explodes = new ArrayList<>();
+	
+	public GameFactory gf = new DefaultFactory();
 	
 	
-	static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
+	public static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
 
 	public TankFrame() {
 		setSize(GAME_WIDTH, GAME_HEIGHT);

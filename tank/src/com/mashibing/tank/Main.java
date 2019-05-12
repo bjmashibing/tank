@@ -1,5 +1,8 @@
 package com.mashibing.tank;
 
+import com.mashibing.tank.abstractfactory.DefaultFactory;
+import com.mashibing.tank.abstractfactory.GameFactory;
+
 public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
@@ -9,7 +12,7 @@ public class Main {
 		
 		//初始化敌方坦克
 		for(int i=0; i<initTankCount; i++) {
-			tf.tanks.add(new Tank(50 + i*80, 200, Dir.DOWN, Group.BAD, tf));
+			tf.tanks.add(tf.gf.createTank(50 + i*80, 200, Dir.DOWN, Group.BAD, tf));
 		}
 		
 		new Thread(()->new Audio("audio/war1.wav").loop()).start();

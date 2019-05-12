@@ -1,5 +1,7 @@
 package com.mashibing.tank;
 
+import com.mashibing.tank.abstractfactory.BaseTank;
+
 public class DefaultFireStrategy implements FireStrategy {
 
 	@Override
