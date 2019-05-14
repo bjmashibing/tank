@@ -22,19 +22,20 @@ public class Tank {
 	Dir dir = Dir.DOWN;
 
 	private boolean moving = true;
-	TankFrame tf = null;
+	
 	private boolean living = true;
 	Group group = Group.BAD;
 	
 	FireStrategy fs;
+	GameModel gm;
 	
-	public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
+	public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
-		this.tf = tf;
+		this.gm = gm;
 		
 		rect.x = this.x;
 		rect.y = this.y;
@@ -127,7 +128,7 @@ public class Tank {
 	}
 	
 	public void paint(Graphics g) {
-		if(!living) tf.tanks.remove(this);
+		if(!living) gm.tanks.remove(this);
 		
 		
 		
