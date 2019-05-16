@@ -15,12 +15,12 @@ public class Tank extends GameObject {
 
 	public static int HEIGHT = ResourceMgr.goodTankU.getHeight();
 
-	Rectangle rect = new Rectangle();
+	public Rectangle rect = new Rectangle();
 
 	private Random random = new Random();
 
 	public int x, y;
-	//int oldX, oldY
+	int oldX, oldY;
 
 	public Dir dir = Dir.DOWN;
 
@@ -31,14 +31,14 @@ public class Tank extends GameObject {
 	public Group group = Group.BAD;
 	FireStrategy fs;
 
-	public GameModel gm;
-	public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
+	
+	public Tank(int x, int y, Dir dir, Group group) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
-		this.gm = gm;
+		
 
 		rect.x = this.x;
 		rect.y = this.y;
@@ -57,6 +57,8 @@ public class Tank extends GameObject {
 		} else {
 			fs = new DefaultFireStrategy();
 		}
+		
+		GameModel.getInstance().add(this);
 	}
 
 	private void boundsCheck() {
@@ -101,10 +103,16 @@ public class Tank extends GameObject {
 	public boolean isMoving() {
 		return moving;
 	}
-
+	
+	public void back() {
+		x = oldX;
+		y = oldY;
+	}
+	
 	private void move() {
-		//oldX = x
-		//oldY = y;
+		//记录移动之前的位置
+		oldX = x;
+		oldY = y;
 		
 		if (!moving)
 			return;
@@ -139,7 +147,7 @@ public class Tank extends GameObject {
 
 	public void paint(Graphics g) {
 		if (!living)
-			gm.remove(this);
+			GameModel.getInstance().remove(this);
 
 		switch (dir) {
 		case LEFT:
