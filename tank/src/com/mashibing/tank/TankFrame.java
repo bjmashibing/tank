@@ -30,6 +30,7 @@ public class TankFrame extends Frame {
 
 			@Override
 			public void windowClosing(WindowEvent e) { // bjmashibing/tank
+				
 				System.exit(0);
 			}
 
@@ -95,6 +96,7 @@ public class TankFrame extends Frame {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
+			
 			int key = e.getKeyCode();
 			switch (key) {
 			case KeyEvent.VK_LEFT:
@@ -111,7 +113,7 @@ public class TankFrame extends Frame {
 				break;
 
 			case KeyEvent.VK_CONTROL:
-				gm.getMainTank().fire();
+				gm.getMainTank().handleFireKey();
 				break;
 
 			default:
@@ -141,3 +143,5 @@ public class TankFrame extends Frame {
 		}
 	}
 }
+
+//e.getSource().repaint()
