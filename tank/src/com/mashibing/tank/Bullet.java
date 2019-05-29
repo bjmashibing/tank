@@ -3,31 +3,33 @@ package com.mashibing.tank;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public class Bullet {
+public class Bullet extends GameObject {
 	private static final int SPEED = 6;
 	public static int WIDTH = ResourceMgr.bulletD.getWidth();
 	public static int HEIGHT = ResourceMgr.bulletD.getHeight();
 	
-	Rectangle rect = new Rectangle();
+	public Rectangle rect = new Rectangle();
 	
-	private int x, y;
+	
 	private Dir dir;
 	
 	private boolean living = true;
-	TankFrame tf = null;
-	private Group group = Group.BAD;
+
+	public Group group = Group.BAD;
 	
-	public Bullet(int x, int y, Dir dir, Group group, TankFrame tf) {
+	public Bullet(int x, int y, Dir dir, Group group) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 		this.group = group;
-		this.tf = tf;
+		
 		
 		rect.x = this.x;
 		rect.y = this.y;
 		rect.width = WIDTH;
 		rect.height = HEIGHT;
+		
+		GameModel.getInstance().add(this);
 				
 	}
 	
@@ -41,7 +43,7 @@ public class Bullet {
 
 	public void paint(Graphics g) {
 		if(!living) {
-			tf.bullets.remove(this);
+			GameModel.getInstance().remove(this);
 		}
 		
 		switch(dir) {
@@ -87,20 +89,19 @@ public class Bullet {
 		
 	}
 
-	public void collideWith(Tank tank) {
-		if(this.group == tank.getGroup()) return;
-		
-		if(rect.intersects(tank.rect)) {
-			tank.die();
-			this.die();
-			int eX = tank.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
-			int eY = tank.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-			tf.explodes.add(new Explode(eX, eY, tf));
-		}
-		
+	
+
+	public void die() {
+		this.living = false;
 	}
 
-	private void die() {
-		this.living = false;
+	@Override
+	public int getWidth() {
+		return WIDTH;
+	}
+
+	@Override
+	public int getHeight() {
+		return HEIGHT;
 	}
 }
