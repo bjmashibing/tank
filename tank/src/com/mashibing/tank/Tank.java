@@ -23,7 +23,7 @@ public class Tank {
 	
 	private Dir dir = Dir.DOWN;
 
-	private boolean moving = true;
+	private boolean moving = false;
 
 	private TankFrame tf = null;
 

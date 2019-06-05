@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class TankFrame extends Frame {
 	public static final TankFrame INSTANCE = new TankFrame();
@@ -26,7 +27,22 @@ public class TankFrame extends Frame {
 	static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
 	
 	public void addTank(Tank t) {
+		for(int i=0; i<tanks.size(); i++) {
+			if(t.getId().equals(tanks.get(i).getId())) {
+				return;
+			}
+		}
 		tanks.add(t);
+	}
+	
+	public Tank findByUUID(UUID id) {
+		for(int i=0; i<tanks.size(); i++) {
+			if(id.equals(tanks.get(i).getId())) {
+				return tanks.get(i);
+			}
+		}
+		
+		return null;
 	}
 
 	private TankFrame() {
