@@ -183,4 +183,9 @@ public class TankFrame extends Frame {
 			}
 		}
 	}
+
+	public Tank getMainTank() {
+		// TODO Auto-generated method stub
+		return this.myTank;
+	}
 }

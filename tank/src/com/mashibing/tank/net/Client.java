@@ -91,13 +91,15 @@ class ClientHandler extends SimpleChannelInboundHandler<TankJoinMsg> {
 
 	@Override
 	public void channelRead0(ChannelHandlerContext ctx, TankJoinMsg msg) throws Exception {
+		System.out.println(msg);
 		Tank t = new Tank(msg);
-		TankFrame.INSTANCE.addTank(t);
+		if(!t.getId().equals(TankFrame.INSTANCE.getMainTank().getId()))
+			TankFrame.INSTANCE.addTank(t);
 	}
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		ctx.writeAndFlush(new TankJoinMsg(5, 8, Dir.DOWN, false, Group.GOOD, UUID.randomUUID()));
+		ctx.writeAndFlush(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
 	}
 
 }
