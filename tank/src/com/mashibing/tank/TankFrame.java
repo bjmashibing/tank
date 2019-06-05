@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 public class TankFrame extends Frame {
+	public static final TankFrame INSTANCE = new TankFrame();
 	
 	Random r = new Random();
 
@@ -24,11 +25,11 @@ public class TankFrame extends Frame {
 	
 	static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
 
-	public TankFrame() {
+	private TankFrame() {
 		setSize(GAME_WIDTH, GAME_HEIGHT);
 		setResizable(false);
 		setTitle("tank war");
-		setVisible(true);
+		//setVisible(true);
 
 		this.addKeyListener(new MyKeyListener());
 
