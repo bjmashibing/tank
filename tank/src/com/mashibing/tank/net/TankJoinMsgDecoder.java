@@ -14,7 +14,7 @@ public class TankJoinMsgDecoder extends ByteToMessageDecoder{
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-		if(in.readableBytes() < 148) return; //TCP 拆包 粘包的问题
+		if(in.readableBytes() < 33) return; //TCP 拆包 粘包的问题
 		
 		//in.markReaderIndex();
 		TankJoinMsg msg = new TankJoinMsg();

@@ -30,8 +30,7 @@ public class Server {
 					@Override
 					protected void initChannel(SocketChannel ch) throws Exception {
 						ChannelPipeline pl = ch.pipeline();
-						pl.addLast(new TankJoinMsgDecoder())
-							.addLast(new ServerChildHandler());
+						pl.addLast(new ServerChildHandler());
 					}
 				})
 				.bind(8888)
@@ -60,14 +59,9 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter { //SimpleChannleI
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		System.out.println("channelRead");
-		try {
-			TankJoinMsg tm = (TankJoinMsg)msg;
+
+		Server.clients.writeAndFlush(msg);
 		
-			System.out.println(tm);
-		} finally {
-			ReferenceCountUtil.release(msg);
-		}
 		/*ByteBuf buf = null;
 		try {
 			buf = (ByteBuf)msg;
