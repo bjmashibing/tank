@@ -3,12 +3,14 @@ package com.mashibing.tank;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
+import java.util.UUID;
 
 public class Tank {
 	private static final int SPEED = 2;
 	public static int WIDTH = ResourceMgr.goodTankU.getWidth();
 
 	public static int HEIGHT = ResourceMgr.goodTankU.getHeight();
+	private UUID id = UUID.randomUUID();
 	
 	Rectangle rect = new Rectangle();
 	

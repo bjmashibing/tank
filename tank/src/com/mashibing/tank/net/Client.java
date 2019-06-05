@@ -74,7 +74,7 @@ class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
 	@Override
 	protected void initChannel(SocketChannel ch) throws Exception {
 		ch.pipeline()
-			.addLast(new TankMsgEncoder())
+			.addLast(new TankJoinMsgEncoder())
 			.addLast(new ClientHandler());
 	}
 
@@ -102,7 +102,7 @@ class ClientHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		ctx.writeAndFlush(new TankMsg(5, 8));
+		//ctx.writeAndFlush(new TankJoinMsg(5, 8));
 	}
 
 }
