@@ -10,6 +10,7 @@ public class Tank {
 	public static int WIDTH = ResourceMgr.goodTankU.getWidth();
 
 	public static int HEIGHT = ResourceMgr.goodTankU.getHeight();
+	
 	private UUID id = UUID.randomUUID();
 	
 	Rectangle rect = new Rectangle();
@@ -116,8 +117,6 @@ public class Tank {
 	
 	public void paint(Graphics g) {
 		if(!living) tf.tanks.remove(this);
-		
-		
 		
 		switch(dir) {
 		case LEFT:

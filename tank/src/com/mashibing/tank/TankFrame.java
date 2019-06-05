@@ -9,12 +9,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 public class TankFrame extends Frame {
+	
+	Random r = new Random();
 
-	Tank myTank = new Tank(200, 400, Dir.DOWN, Group.GOOD, this);
+	Tank myTank = new Tank(r.nextInt(GAME_WIDTH), r.nextInt(GAME_HEIGHT), Dir.DOWN, Group.GOOD, this);
 	List<Bullet> bullets = new ArrayList<>();
 	List<Tank> tanks = new ArrayList<>();
 	List<Explode> explodes = new ArrayList<>();
@@ -60,9 +62,9 @@ public class TankFrame extends Frame {
 	public void paint(Graphics g) {
 		Color c = g.getColor();
 		g.setColor(Color.WHITE);
-		g.drawString("子弹的数量:" + bullets.size(), 10, 60);
-		g.drawString("敌人的数量:" + tanks.size(), 10, 80);
-		g.drawString("爆炸的数量:" + explodes.size(), 10, 100);
+		g.drawString("瀛愬脊鐨勬暟閲�:" + bullets.size(), 10, 60);
+		g.drawString("鏁屼汉鐨勬暟閲�:" + tanks.size(), 10, 80);
+		g.drawString("鐖嗙偢鐨勬暟閲�:" + explodes.size(), 10, 100);
 		g.setColor(c);
 
 		myTank.paint(g);
