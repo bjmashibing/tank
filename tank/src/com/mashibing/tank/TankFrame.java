@@ -24,6 +24,10 @@ public class TankFrame extends Frame {
 	
 	
 	static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
+	
+	public void addTank(Tank t) {
+		tanks.add(t);
+	}
 
 	private TankFrame() {
 		setSize(GAME_WIDTH, GAME_HEIGHT);
