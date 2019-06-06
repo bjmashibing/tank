@@ -31,8 +31,8 @@ public class Main {
 		}).start();
 		
 		//or you can new a thread to run this
-		Client c = new Client();
-		c.connect();
+		
+		Client.INSTANCE.connect();
 		
 	}
 

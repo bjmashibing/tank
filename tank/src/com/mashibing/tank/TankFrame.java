@@ -84,6 +84,7 @@ public class TankFrame extends Frame {
 			bullets.get(i).paint(g);
 		}
 		
+		//java8 stream api
 		tanks.values().stream().forEach((e)->e.paint(g));
 		
 		for (int i = 0; i < explodes.size(); i++) {
@@ -190,7 +191,6 @@ public class TankFrame extends Frame {
 	}
 
 	public Tank getMainTank() {
-		// TODO Auto-generated method stub
 		return this.myTank;
 	}
 }
