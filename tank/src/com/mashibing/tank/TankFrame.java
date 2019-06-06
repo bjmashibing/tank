@@ -9,7 +9,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -20,29 +22,18 @@ public class TankFrame extends Frame {
 
 	Tank myTank = new Tank(r.nextInt(GAME_WIDTH), r.nextInt(GAME_HEIGHT), Dir.DOWN, Group.GOOD, this);
 	List<Bullet> bullets = new ArrayList<>();
-	List<Tank> tanks = new ArrayList<>();
+	Map<UUID,Tank> tanks = new HashMap<>();
 	List<Explode> explodes = new ArrayList<>();
 	
 	
 	static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
 	
 	public void addTank(Tank t) {
-		for(int i=0; i<tanks.size(); i++) {
-			if(t.getId().equals(tanks.get(i).getId())) {
-				return;
-			}
-		}
-		tanks.add(t);
+		tanks.put(t.getId(), t);
 	}
 	
 	public Tank findByUUID(UUID id) {
-		for(int i=0; i<tanks.size(); i++) {
-			if(id.equals(tanks.get(i).getId())) {
-				return tanks.get(i);
-			}
-		}
-		
-		return null;
+		return tanks.get(id);
 	}
 
 	private TankFrame() {
@@ -83,9 +74,9 @@ public class TankFrame extends Frame {
 	public void paint(Graphics g) {
 		Color c = g.getColor();
 		g.setColor(Color.WHITE);
-		g.drawString("瀛愬脊鐨勬暟閲�:" + bullets.size(), 10, 60);
-		g.drawString("鏁屼汉鐨勬暟閲�:" + tanks.size(), 10, 80);
-		g.drawString("鐖嗙偢鐨勬暟閲�:" + explodes.size(), 10, 100);
+		g.drawString("bullets:" + bullets.size(), 10, 60);
+		g.drawString("tanks:" + tanks.size(), 10, 80);
+		g.drawString("explodes" + explodes.size(), 10, 100);
 		g.setColor(c);
 
 		myTank.paint(g);
@@ -93,9 +84,7 @@ public class TankFrame extends Frame {
 			bullets.get(i).paint(g);
 		}
 		
-		for (int i = 0; i < tanks.size(); i++) {
-			tanks.get(i).paint(g);
-		}
+		tanks.values().stream().forEach((e)->e.paint(g));
 		
 		for (int i = 0; i < explodes.size(); i++) {
 			explodes.get(i).paint(g);
