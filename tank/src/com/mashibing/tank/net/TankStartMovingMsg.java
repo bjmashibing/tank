@@ -8,56 +8,80 @@ import java.io.IOException;
 import java.util.UUID;
 
 import com.mashibing.tank.Dir;
-import com.mashibing.tank.Group;
 import com.mashibing.tank.Tank;
 import com.mashibing.tank.TankFrame;
 
-public class TankJoinMsg extends Msg {
+
+
+public class TankStartMovingMsg extends Msg {
+
 	
-	public int x, y;
-	public Dir dir;
-	public boolean moving;
-	public Group group;
-	public UUID id;
-	
-	
-	
-	public TankJoinMsg(Tank t) {
-		this.x = t.getX();
-		this.y = t.getY();
-		this.dir = t.getDir();
-		this.group = t.getGroup();
-		this.id = t.getId();
-		this.moving = t.isMoving();
+	UUID id;
+	int x, y;
+
+	Dir dir;
+
+	public TankStartMovingMsg() {
+		
 	}
-	
-	public TankJoinMsg(int x, int y, Dir dir, boolean moving, Group group, UUID id) {
-		super();
+
+	public TankStartMovingMsg(UUID id, int x, int y, Dir dir) {
+		this.id = id;
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
-		this.moving = moving;
-		this.group = group;
-		this.id = id; 
-	}
-	
-	public TankJoinMsg() {
 	}
 
+	public TankStartMovingMsg(Tank tank) {
+		this.id = tank.getId();
+		this.x = tank.getX();
+		this.y = tank.getY();
+		this.dir = tank.getDir();
+	}
+
+	public Dir getDir() {
+		return dir;
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	@Override
+	public MsgType getMsgType() {
+		return MsgType.TankStartMoving;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+	@Override
+	public void handle() {
+		if (this.id.equals(TankFrame.INSTANCE.getMainTank().getId()))
+			return;
+
+		Tank t = TankFrame.INSTANCE.findByUUID(this.id);
+
+		if (t != null) {
+			t.setMoving(true);
+			t.setX(this.x);
+			t.setY(this.y);
+			t.setDir(dir);
+		}
+	}
+	@Override
 	public void parse(byte[] bytes) {
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
 		try {
-			//TODO:先读TYPE信息，根据TYPE信息处理不同的消息
-			//略过消息类型
-			//dis.readInt();
 			
+			this.id = new UUID(dis.readLong(), dis.readLong());
 			this.x = dis.readInt();
 			this.y = dis.readInt();
 			this.dir = Dir.values()[dis.readInt()];
-			this.moving = dis.readBoolean();
-			this.group = Group.values()[dis.readInt()];
-			this.id = new UUID(dis.readLong(), dis.readLong());
-			//this.name = dis.readUTF();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -67,7 +91,25 @@ public class TankJoinMsg extends Msg {
 				e.printStackTrace();
 			}
 		}
+		
 	}
+	
+	public void setDir(Dir dir) {
+		this.dir = dir;
+	}
+	
+	public void setId(UUID id) {
+		this.id = id;
+	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
+	}
+
 	@Override
 	public byte[] toBytes() {
 		ByteArrayOutputStream baos = null;
@@ -76,19 +118,13 @@ public class TankJoinMsg extends Msg {
 		try {
 			baos = new ByteArrayOutputStream();
 			dos = new DataOutputStream(baos);
-			
-			//dos.writeInt(TYPE.ordinal());
+			dos.writeLong(id.getMostSignificantBits());
+			dos.writeLong(id.getLeastSignificantBits());
 			dos.writeInt(x);
 			dos.writeInt(y);
 			dos.writeInt(dir.ordinal());
-			dos.writeBoolean(moving);
-			dos.writeInt(group.ordinal());
-			dos.writeLong(id.getMostSignificantBits());
-			dos.writeLong(id.getLeastSignificantBits());
-			//dos.writeUTF(name);
 			dos.flush();
 			bytes = baos.toByteArray();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -110,40 +146,18 @@ public class TankJoinMsg extends Msg {
 		
 		return bytes;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(this.getClass().getName())
 			   .append("[")
 			   .append("uuid=" + id + " | ")
-			   //.append("name=" + name + " | ")
 			   .append("x=" + x + " | ")
 			   .append("y=" + y + " | ")
-			   .append("moving=" + moving + " | ")
 			   .append("dir=" + dir + " | ")
-			   .append("group=" + group + " | ")
 			   .append("]");
 		return builder.toString();
 	}
-	
-	@Override
-	public void handle() {
-		if(this.id.equals(TankFrame.INSTANCE.getMainTank().getId()) ||
-				TankFrame.INSTANCE.findByUUID(this.id) != null) return;
-//		System.out.println(this);
-		Tank t = new Tank(this);
-		TankFrame.INSTANCE.addTank(t);
-		
-		//send a new TankJoinMsg to the new joined tank
-		Client.INSTANCE.send(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
-	}
-
-	@Override
-	public MsgType getMsgType() {
-		// TODO Auto-generated method stub
-		return MsgType.TankJoin;
-	}
-
 
 }

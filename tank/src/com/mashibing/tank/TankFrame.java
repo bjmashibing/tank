@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import com.mashibing.tank.net.Client;
+import com.mashibing.tank.net.TankStartMovingMsg;
+
 public class TankFrame extends Frame {
 	public static final TankFrame INSTANCE = new TankFrame();
 	
@@ -186,6 +189,8 @@ public class TankFrame extends Frame {
 					myTank.setDir(Dir.RIGHT);
 				if (bD)
 					myTank.setDir(Dir.DOWN);
+				//发出坦克移动的消息
+				Client.INSTANCE.send(new TankStartMovingMsg(getMainTank()));
 			}
 		}
 	}

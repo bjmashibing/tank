@@ -6,7 +6,9 @@ import java.awt.Rectangle;
 import java.util.Random;
 import java.util.UUID;
 
+import com.mashibing.tank.net.Client;
 import com.mashibing.tank.net.TankJoinMsg;
+import com.mashibing.tank.net.TankStartMovingMsg;
 
 public class Tank {
 	private static final int SPEED = 2;
