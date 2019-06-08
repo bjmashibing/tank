@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import com.mashibing.tank.Dir;
 import com.mashibing.tank.Group;
+import com.mashibing.tank.net.MsgType;
 import com.mashibing.tank.net.TankJoinMsg;
 import com.mashibing.tank.net.TankJoinMsgDecoder;
 import com.mashibing.tank.net.TankJoinMsgEncoder;
@@ -31,6 +32,11 @@ class TankJoinMsgCodecTest {
 		ch.writeOutbound(msg);
 		
 		ByteBuf buf = (ByteBuf)ch.readOutbound();
+		MsgType msgType = MsgType.values()[buf.readInt()];
+		assertEquals(MsgType.TankJoin, msgType);
+		
+		int length = buf.readInt();
+		assertEquals(33, length);
 		
 		int x = buf.readInt();
 		int y = buf.readInt();
@@ -60,7 +66,11 @@ class TankJoinMsgCodecTest {
 			.addLast(new TankJoinMsgDecoder());
 		
 		ByteBuf buf = Unpooled.buffer();
-		buf.writeBytes(msg.toBytes());
+		buf.writeInt(MsgType.TankJoin.ordinal());
+		byte[] bytes = msg.toBytes();
+		buf.writeInt(bytes.length);
+		buf.writeBytes(bytes);
+		
 		
 		ch.writeInbound(buf.duplicate());
 		

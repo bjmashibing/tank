@@ -20,6 +20,8 @@ public class TankJoinMsg extends Msg {
 	public Group group;
 	public UUID id;
 	
+	
+	
 	public TankJoinMsg(Tank t) {
 		this.x = t.getX();
 		this.y = t.getY();
@@ -74,6 +76,7 @@ public class TankJoinMsg extends Msg {
 		try {
 			baos = new ByteArrayOutputStream();
 			dos = new DataOutputStream(baos);
+			
 			//dos.writeInt(TYPE.ordinal());
 			dos.writeInt(x);
 			dos.writeInt(y);
@@ -85,6 +88,7 @@ public class TankJoinMsg extends Msg {
 			//dos.writeUTF(name);
 			dos.flush();
 			bytes = baos.toByteArray();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -134,4 +138,12 @@ public class TankJoinMsg extends Msg {
 		//send a new TankJoinMsg to the new joined tank
 		Client.INSTANCE.send(new TankJoinMsg(TankFrame.INSTANCE.getMainTank()));
 	}
+
+	@Override
+	public MsgType getMsgType() {
+		// TODO Auto-generated method stub
+		return MsgType.TankJoin;
+	}
+
+
 }
