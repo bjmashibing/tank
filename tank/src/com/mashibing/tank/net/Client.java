@@ -53,7 +53,7 @@ public class Client {
 			f.sync();
 			// wait until close
 			f.channel().closeFuture().sync();
-			System.out.println("�Ѿ��˳�");
+			System.out.println("connection closed!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
