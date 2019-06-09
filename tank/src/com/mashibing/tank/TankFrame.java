@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import com.mashibing.tank.net.Client;
 import com.mashibing.tank.net.TankStartMovingMsg;
+import com.mashibing.tank.net.TankStopMsg;
 
 public class TankFrame extends Frame {
 	public static final TankFrame INSTANCE = new TankFrame();
@@ -176,10 +177,12 @@ public class TankFrame extends Frame {
 
 		private void setMainTankDir() {
 
-			if (!bL && !bU && !bR && !bD)
+			if (!bL && !bU && !bR && !bD) {
 				myTank.setMoving(false);
-			else {
-				myTank.setMoving(true);
+				Client.INSTANCE.send(new TankStopMsg(getMainTank()));
+			} else {
+				
+				
 
 				if (bL)
 					myTank.setDir(Dir.LEFT);
@@ -190,7 +193,10 @@ public class TankFrame extends Frame {
 				if (bD)
 					myTank.setDir(Dir.DOWN);
 				//发出坦克移动的消息
-				Client.INSTANCE.send(new TankStartMovingMsg(getMainTank()));
+				if(!myTank.isMoving())
+					Client.INSTANCE.send(new TankStartMovingMsg(getMainTank()));
+				
+				myTank.setMoving(true);
 			}
 		}
 	}

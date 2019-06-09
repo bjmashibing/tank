@@ -31,12 +31,17 @@ public class MsgDecoder extends ByteToMessageDecoder{
 		
 		Msg msg = null;
 		
+		//reflection
+		//Class.forName(msgType.toString + "Msg").constructor().newInstance();
 		switch(msgType) {
 		case TankJoin:
 			msg = new TankJoinMsg();
 			break;
 		case TankStartMoving:
 			msg = new TankStartMovingMsg();
+			break;
+		case TankStop:
+			msg = new TankStopMsg();
 			break;
 		default:
 			break;

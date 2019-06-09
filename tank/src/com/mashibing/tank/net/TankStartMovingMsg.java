@@ -73,6 +73,7 @@ public class TankStartMovingMsg extends Msg {
 			t.setDir(dir);
 		}
 	}
+	
 	@Override
 	public void parse(byte[] bytes) {
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));

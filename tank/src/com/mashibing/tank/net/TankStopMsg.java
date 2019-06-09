@@ -5,24 +5,29 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.nio.channels.SocketChannel;
 import java.util.UUID;
 
-public class TankStopMsg extends Msg {
+import com.mashibing.tank.Tank;
+import com.mashibing.tank.TankFrame;
 
-public static final MsgType TYPE = MsgType.TankStop;
+public class TankStopMsg extends Msg {
 	
 	UUID id;
 	int x, y;
+	
+	public TankStopMsg(Tank t) {
+		this.id = t.getId();
+		this.x = t.getX();
+		this.y = t.getY();
+	}
+	
 	public TankStopMsg(UUID id, int x, int y) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
 	}
 	
-	public TankStopMsg() {
-		
-	}
+	public TankStopMsg() {}
 	
 	@Override
 	public byte[] toBytes() {
@@ -32,7 +37,6 @@ public static final MsgType TYPE = MsgType.TankStop;
 		try {
 			baos = new ByteArrayOutputStream();
 			dos = new DataOutputStream(baos);
-			dos.writeInt(TYPE.ordinal());
 			dos.writeLong(id.getMostSignificantBits());
 			dos.writeLong(id.getLeastSignificantBits());
 			dos.writeInt(x);
@@ -65,9 +69,6 @@ public static final MsgType TYPE = MsgType.TankStop;
 	public void parse(byte[] bytes) {
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
 		try {
-			//TODO:先读TYPE信息，根据TYPE信息处理不同的消息
-			//略过消息类型
-			dis.readInt();
 			
 			this.id = new UUID(dis.readLong(), dis.readLong());
 			this.x = dis.readInt();
@@ -87,17 +88,17 @@ public static final MsgType TYPE = MsgType.TankStop;
 	
 	@Override
 	public void handle() {
-	/*	if (this.id.equals(GameModel.getPlayer().getId()))
+		//if this msg is send by myself do nothing
+		if (this.id.equals(TankFrame.INSTANCE.getMainTank().getId()))
 			return;
 
-		GameObject object = GameModel.findByUUID(this.id);
+		Tank t = TankFrame.INSTANCE.findByUUID(this.id);
 
-		if (object != null && object instanceof Player) {
-			Player p = (Player) object;
-			p.stop();
-			p.x = this.x;
-			p.y = this.y;
-		}*/
+		if (t != null) {
+			t.setMoving(false);
+			t.setX(this.x);
+			t.setY(this.y);
+		}
 	}
 
 	@Override
