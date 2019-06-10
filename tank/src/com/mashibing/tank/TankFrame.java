@@ -35,6 +35,10 @@ public class TankFrame extends Frame {
 	
 	static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
 	
+	public void addBullet(Bullet b) {
+		bullets.add(b);
+	}
+	
 	public void addTank(Tank t) {
 		tanks.put(t.getId(), t);
 	}
@@ -127,25 +131,30 @@ public class TankFrame extends Frame {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int key = e.getKeyCode();
+
 			switch (key) {
 			case KeyEvent.VK_LEFT:
 				bL = true;
+				setMainTankDir();
 				break;
 			case KeyEvent.VK_UP:
 				bU = true;
+				setMainTankDir();
 				break;
 			case KeyEvent.VK_RIGHT:
 				bR = true;
+				setMainTankDir();
 				break;
 			case KeyEvent.VK_DOWN:
 				bD = true;
+				setMainTankDir();
 				break;
 
 			default:
 				break;
 			}
 
-			setMainTankDir();
+			
 			
 			new Thread(()->new Audio("audio/tank_move.wav").play()).start();
 		}
@@ -153,18 +162,23 @@ public class TankFrame extends Frame {
 		@Override
 		public void keyReleased(KeyEvent e) {
 			int key = e.getKeyCode();
+			
 			switch (key) {
 			case KeyEvent.VK_LEFT:
 				bL = false;
+				setMainTankDir();
 				break;
 			case KeyEvent.VK_UP:
 				bU = false;
+				setMainTankDir();
 				break;
 			case KeyEvent.VK_RIGHT:
 				bR = false;
+				setMainTankDir();
 				break;
 			case KeyEvent.VK_DOWN:
 				bD = false;
+				setMainTankDir();
 				break;
 
 			case KeyEvent.VK_CONTROL:
@@ -175,7 +189,7 @@ public class TankFrame extends Frame {
 				break;
 			}
 
-			setMainTankDir();
+			
 		}
 
 		private void setMainTankDir() {

@@ -6,10 +6,9 @@ import java.awt.Rectangle;
 import java.util.Random;
 import java.util.UUID;
 
+import com.mashibing.tank.net.BulletNewMsg;
 import com.mashibing.tank.net.Client;
-import com.mashibing.tank.net.TankDirChangedMsg;
 import com.mashibing.tank.net.TankJoinMsg;
-import com.mashibing.tank.net.TankStartMovingMsg;
 
 public class Tank {
 	private static final int SPEED = 2;
@@ -68,7 +67,11 @@ public class Tank {
 		int bX = this.x + Tank.WIDTH/2 - Bullet.WIDTH/2;
 		int bY = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
 		
-		tf.bullets.add(new Bullet(bX, bY, this.dir, this.group, this.tf));
+		Bullet b = new Bullet(bX, bY, this.dir, this.group, this.tf);
+		
+		tf.bullets.add(b);
+		
+		Client.INSTANCE.send(new BulletNewMsg(b));
 		
 		if(this.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
 	}
