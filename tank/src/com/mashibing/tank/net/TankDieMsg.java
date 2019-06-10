@@ -5,21 +5,22 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.nio.channels.SocketChannel;
 import java.util.UUID;
+
+import com.mashibing.tank.Tank;
+import com.mashibing.tank.TankFrame;
 
 
 
 public class TankDieMsg extends Msg {
-
+	UUID bulletId; //who killed me
 	UUID id;
-	public TankDieMsg(UUID id) {
+	public TankDieMsg(UUID playerId, UUID id) {
+		this.bulletId = playerId;
 		this.id = id;
 	}
 	
-	public TankDieMsg() {
-		
-	}
+	public TankDieMsg() {}
 	
 	@Override
 	public byte[] toBytes() {
@@ -29,6 +30,8 @@ public class TankDieMsg extends Msg {
 		try {
 			baos = new ByteArrayOutputStream();
 			dos = new DataOutputStream(baos);
+			dos.writeLong(bulletId.getMostSignificantBits());
+			dos.writeLong(bulletId.getLeastSignificantBits());
 			dos.writeLong(id.getMostSignificantBits());
 			dos.writeLong(id.getLeastSignificantBits());
 			dos.flush();
@@ -59,8 +62,7 @@ public class TankDieMsg extends Msg {
 	public void parse(byte[] bytes) {
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(bytes));
 		try {
-			//TODO:先读TYPE信息，根据TYPE信息处理不同的消息
-			//略过消息类型
+			this.bulletId = new UUID(dis.readLong(), dis.readLong());
 			this.id = new UUID(dis.readLong(), dis.readLong());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -77,11 +79,20 @@ public class TankDieMsg extends Msg {
 	
 	@Override
 	public void handle() {
-		/*GameObject go = GameModel.findByUUID(id);
-		if(go != null && go instanceof Player) {
-			Player p = (Player)go;
-			p.die();
-		}*/
+		System.out.println("we got a tank die:" + id);
+		System.out.println("and my tank is:" + TankFrame.INSTANCE.getMainTank().getId());
+		Tank tt = TankFrame.INSTANCE.findByUUID(id);
+		System.out.println("i found a tank with this id:" + tt);
+		
+		if(this.id.equals(TankFrame.INSTANCE.getMainTank().getId())) {
+			TankFrame.INSTANCE.getMainTank().die();
+		} else {
+
+			Tank t = TankFrame.INSTANCE.findByUUID(id);
+			if(t != null) {
+				t.die();
+			}
+		}
 	}
 
 	@Override
@@ -89,7 +100,8 @@ public class TankDieMsg extends Msg {
 		StringBuilder builder = new StringBuilder();
 		builder.append(this.getClass().getName())
 			   .append("[")
-			   .append("uuid=" + id + " | ")
+			   .append("bulletId=" + bulletId + "|")
+			   .append("id=" + id + " | ")
 			   .append("]");
 		return builder.toString();
 	}

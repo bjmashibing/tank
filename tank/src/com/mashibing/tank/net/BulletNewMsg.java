@@ -21,7 +21,7 @@ public class BulletNewMsg extends Msg {
 	Group group;
 	
 	public BulletNewMsg(Bullet bullet) {
-		this.playerID = TankFrame.INSTANCE.getMainTank().getId();
+		this.playerID = bullet.getPlayerId();
 		this.id = bullet.getId();
 		this.x = bullet.getX();
 		this.y = bullet.getY();
@@ -103,7 +103,7 @@ public class BulletNewMsg extends Msg {
 		if (this.playerID.equals(TankFrame.INSTANCE.getMainTank().getId()))
 			return;
 		
-		Bullet bullet = new Bullet(x, y, dir, group, TankFrame.INSTANCE);
+		Bullet bullet = new Bullet(this.playerID, x, y, dir, group, TankFrame.INSTANCE);
 		bullet.setId(this.id);
 		TankFrame.INSTANCE.addBullet(bullet);
 	}
