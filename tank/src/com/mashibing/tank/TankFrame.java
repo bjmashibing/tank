@@ -9,13 +9,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.UUID;
 
 import com.mashibing.tank.net.Client;
+import com.mashibing.tank.net.TankDirChangedMsg;
 import com.mashibing.tank.net.TankStartMovingMsg;
 import com.mashibing.tank.net.TankStopMsg;
 
@@ -95,10 +98,10 @@ public class TankFrame extends Frame {
 			explodes.get(i).paint(g);
 		}
 		//collision detect 
-
+		Collection<Tank> values = tanks.values();
 		for(int i=0; i<bullets.size(); i++) {
-			for(int j = 0; j<tanks.size(); j++) 
-				bullets.get(i).collideWith(tanks.get(j));
+			for(Tank t : values ) 
+				bullets.get(i).collideWith(t);
 		}
 		
 		
@@ -176,13 +179,13 @@ public class TankFrame extends Frame {
 		}
 
 		private void setMainTankDir() {
+			//save the old dir
+			Dir dir = myTank.getDir();
 
 			if (!bL && !bU && !bR && !bD) {
 				myTank.setMoving(false);
 				Client.INSTANCE.send(new TankStopMsg(getMainTank()));
 			} else {
-				
-				
 
 				if (bL)
 					myTank.setDir(Dir.LEFT);
@@ -197,7 +200,13 @@ public class TankFrame extends Frame {
 					Client.INSTANCE.send(new TankStartMovingMsg(getMainTank()));
 				
 				myTank.setMoving(true);
+				
+				if(dir != myTank.getDir()) {
+					Client.INSTANCE.send(new TankDirChangedMsg(myTank));
+				}
 			}
+			
+			
 		}
 	}
 

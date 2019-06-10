@@ -62,6 +62,7 @@ public class Client {
 	}
 	
 	public void send(Msg msg) {
+		System.out.println("SEND:" + msg);
 		channel.writeAndFlush(msg);
 	}
 

@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import com.mashibing.tank.net.Client;
+import com.mashibing.tank.net.TankDirChangedMsg;
 import com.mashibing.tank.net.TankJoinMsg;
 import com.mashibing.tank.net.TankStartMovingMsg;
 
@@ -99,6 +100,9 @@ public class Tank {
 		
 		if(!moving) return ;
 		
+		//save the oldDir for TankDirChangedMsg
+		//oldDir = dir;
+		
 		switch (dir) {
 		case LEFT:
 			x -= SPEED;
@@ -151,6 +155,8 @@ public class Tank {
 		}
 	
 		move();
+		
+
 	
 	}
 	

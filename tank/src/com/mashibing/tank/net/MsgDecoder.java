@@ -32,8 +32,8 @@ public class MsgDecoder extends ByteToMessageDecoder{
 		Msg msg = null;
 		
 		//reflection
-		//Class.forName(msgType.toString + "Msg").constructor().newInstance();
-		switch(msgType) {
+		msg = (Msg)Class.forName("com.mashibing.tank.net." + msgType.toString() + "Msg").getDeclaredConstructor().newInstance();
+		/*switch(msgType) {
 		case TankJoin:
 			msg = new TankJoinMsg();
 			break;
@@ -43,9 +43,10 @@ public class MsgDecoder extends ByteToMessageDecoder{
 		case TankStop:
 			msg = new TankStopMsg();
 			break;
+		case Tank
 		default:
 			break;
-		}
+		}*/
 		
 		msg.parse(bytes);
 		out.add(msg);
