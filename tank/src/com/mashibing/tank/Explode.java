@@ -10,14 +10,12 @@ public class Explode {
 	private int x, y;
 	
 	//private boolean living = true;
-	TankFrame tf = null;
 	
 	private int step = 0;
 	
-	public Explode(int x, int y, TankFrame tf) {
+	public Explode(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.tf = tf;
 		
 		new Thread(()->new Audio("audio/explode.wav").play()).start();
 	}
@@ -29,7 +27,7 @@ public class Explode {
 		g.drawImage(ResourceMgr.explodes[step++], x, y, null);
 		
 		if(step >= ResourceMgr.explodes.length) 
-			tf.explodes.remove(this);
+			TankFrame.INSTANCE.explodes.remove(this);
 		
 		
 	}

@@ -77,7 +77,7 @@ public class Tank {
 		this.living = false;
 		int eX = this.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
 		int eY = this.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
-		//TankFrame.INSTANCE.explodes.add(new Explode(eX, eY, tf));
+		TankFrame.INSTANCE.explodes.add(new Explode(eX, eY));
 	}
 	
 	public void fire() {

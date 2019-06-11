@@ -43,8 +43,17 @@ public class TankFrame extends Frame {
 		tanks.put(t.getId(), t);
 	}
 	
-	public Tank findByUUID(UUID id) {
+	public Tank findTankByUUID(UUID id) {
 		return tanks.get(id);
+	}
+	
+	public Bullet findBulletByUUID(UUID id) {
+		for(int i=0; i<bullets.size(); i++) {
+			if(bullets.get(i).getId().equals(id)) 
+				return bullets.get(i);
+		}
+		
+		return null;
 	}
 
 	private TankFrame() {

@@ -7,10 +7,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import com.mashibing.tank.Bullet;
 import com.mashibing.tank.Tank;
 import com.mashibing.tank.TankFrame;
-
-
 
 public class TankDieMsg extends Msg {
 	UUID bulletId; //who killed me
@@ -81,14 +80,19 @@ public class TankDieMsg extends Msg {
 	public void handle() {
 		System.out.println("we got a tank die:" + id);
 		System.out.println("and my tank is:" + TankFrame.INSTANCE.getMainTank().getId());
-		Tank tt = TankFrame.INSTANCE.findByUUID(id);
+		Tank tt = TankFrame.INSTANCE.findTankByUUID(id);
 		System.out.println("i found a tank with this id:" + tt);
+		
+		Bullet b = TankFrame.INSTANCE.findBulletByUUID(bulletId);
+		if(b != null) {
+			b.die();
+		}
 		
 		if(this.id.equals(TankFrame.INSTANCE.getMainTank().getId())) {
 			TankFrame.INSTANCE.getMainTank().die();
 		} else {
 
-			Tank t = TankFrame.INSTANCE.findByUUID(id);
+			Tank t = TankFrame.INSTANCE.findTankByUUID(id);
 			if(t != null) {
 				t.die();
 			}
